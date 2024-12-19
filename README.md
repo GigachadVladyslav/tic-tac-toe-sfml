@@ -1,1 +1,1 @@
-# tic tac toe sfml
+# Tic Tac Toe sfml

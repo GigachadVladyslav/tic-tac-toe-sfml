@@ -7,12 +7,17 @@
 #include <iostream>
 #include <Windows.h>  
 #include <string>
+#include <vector>
 
-#include "GameMenu.hpp"
+
 #include "Boardload.hpp"
+#include "Button.hpp"
+#include "Font.hpp"
+#include "WindowRender.hpp"
+#include "Ai.hpp"
 
 
-using namespace game;
+
 using namespace sf;
 using namespace std;
 

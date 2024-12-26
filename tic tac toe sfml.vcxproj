@@ -19,13 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Ai.cpp" />
+    <ClCompile Include="Code\Boardload.cpp" />
+    <ClCompile Include="Code\Button.cpp" />
+    <ClCompile Include="Code\Font.cpp" />
     <ClCompile Include="Code\main.cpp" />
+    <ClCompile Include="Code\WindowRender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Ai.hpp" />
     <ClInclude Include="Code\Boardload.hpp" />
-    <ClInclude Include="Code\Gamelogic.hpp" />
-    <ClInclude Include="Code\GameMenu.hpp" />
+    <ClInclude Include="Code\Button.hpp" />
+    <ClInclude Include="Code\Font.hpp" />
     <ClInclude Include="Code\include.hpp" />
+    <ClInclude Include="Code\WindowRender.hpp" />
     <ClInclude Include="Libaries\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include\SFML\Audio.hpp" />
     <ClInclude Include="Libaries\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include\SFML\Audio\AlResource.hpp" />
     <ClInclude Include="Libaries\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include\SFML\Audio\Export.hpp" />
@@ -246,9 +253,6 @@
     <None Include="Libaries\SFML-2.6.2\include\SFML\System\Utf.inl" />
     <None Include="Libaries\SFML-2.6.2\include\SFML\System\Vector2.inl" />
     <None Include="Libaries\SFML-2.6.2\include\SFML\System\Vector3.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Code\Doc.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\background.jpg" />

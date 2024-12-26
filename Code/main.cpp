@@ -1,81 +1,131 @@
 ﻿#include "include.hpp"
+#include "Ai.hpp"
 
+enum GameState {
+    MainMenu,
+    GamePlay,
+    GameOver
+};
 
 int main() {
-    RenderWindow window(VideoMode(1380, 920), "Tic Tac Toe", Style::Titlebar | Style::Close);
+    // Создаем окно
+    sf::RenderWindow window(sf::VideoMode(900, 600), "Tic Tac Toe", sf::Style::Titlebar | sf::Style::Close);
     window.setMouseCursorVisible(true);
 
-    _BoardArr_ boardArr;
-    _WindowRender_ windowRend(window);
-    _FontTitul_ fontTitul(window);
-    _Button_Start_ startButton(window);
-    _Button_Exit_ exitButton(window);
-    _BoardRender_ loadBoard(window);
-    _Button_Reset replayButton; 
+    // Создание фона
+    WindowRender background(window);
 
-    GameState currentState = MainMenu;
+    // Доска
+    BoardArr board(window);
 
-    int gap = 20;
-    int cellSize = (1000 - 2 * gap) / 3;
+    // Шрифт и заголовок
+    sf::Font font;
+    if (!font.loadFromFile("font/Parkinsans-Medium.ttf")) {
+        std::cerr << "Error: Could not load font" << std::endl;
+        return -1;
+    }
 
+    TitleText title(window, "Tic Tac Toe", 125, { window.getSize().x / 2.0f, 150.0f });
+
+    GameState gameState = MainMenu;
+
+    // Кнопки
+    Button_ startButton(window, "Start", window.getSize().x / 2.0f, 350.0f, { 300.0f, 65.0f }, font);
+    Button_ exitButton(window, "Exit", window.getSize().x / 2.0f, 490.0f, { 300.0f, 65.0f }, font);
+
+    // Инициализация AI
+    Ai ai;
+    ai.init(2);  // AI играет за "O" (2)
+
+    bool playerTurn = false;  // Переменная, чтобы отслеживать чей ход
+
+    // Основной цикл игры
     while (window.isOpen()) {
-        Event event;
-
+        sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
 
-            if (currentState == MainMenu) {
-                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-                    Vector2i mousePos = Mouse::getPosition(window);
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                if (gameState == MainMenu) {
                     if (startButton.isClicked(mousePos)) {
-                        currentState = GamePlay;
+                        gameState = GamePlay;
                     }
                     if (exitButton.isClicked(mousePos)) {
                         window.close();
                     }
                 }
-            }
-            else if (currentState == GamePlay) {
-                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-                    Vector2i mousePos = Mouse::getPosition(window);
 
-                    int x = (mousePos.x - gap) / (cellSize + gap);
-                    int y = (mousePos.y - gap) / (cellSize + gap);
+                // Если игра продолжается, игрок делает ход
+                if (gameState == GamePlay && playerTurn) {
+                    board.handleClick(mousePos);  // Игрок делает ход
+                    int result = board.checkWin();  // Проверка состояния игры
 
-                    boardArr.handleClick(x, y, currentState);
+                    if (result == 1) {  // Игрок X победил
+                        std::cout << "Player X wins!" << std::endl;
+                        gameState = GameOver;
+                    }
+                    else if (result == 2) {  // Игрок O победил
+                        std::cout << "Player O wins!" << std::endl;
+                        gameState = GameOver;
+                    }
+                    else if (result == 0) {  // Ничья
+                        std::cout << "It's a draw!" << std::endl;
+                        gameState = GameOver;
+                    }
+
+                    // Меняем ход на AI после того, как игрок сделал свой ход
+                    if (gameState == GamePlay) {
+                        playerTurn = false;  // Теперь ход ИИ
+                    }
                 }
-            }
 
-            else if (currentState == GameOver) {
-                if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-                    Vector2i mousePos = Mouse::getPosition(window);
-                    if (replayButton.isClicked(mousePos)) {
-                        boardArr.resetBoard();
-                        currentState = GamePlay;
+                // Если ход ИИ, выполняем его ход
+                if (gameState == GamePlay && !playerTurn) {
+                    ai.performMove(board);  // AI делает ход
+                    int result = board.checkWin();  // Проверка состояния игры после хода AI
+
+                    if (result == 1) {  // Игрок X победил
+                        std::cout << "Player X wins!" << std::endl;
+                        gameState = GameOver;
+                    }
+                    else if (result == 2) {  // Игрок O победил
+                        std::cout << "Player O wins!" << std::endl;
+                        gameState = GameOver;
+                    }
+                    else if (result == 0) {  // Ничья
+                        std::cout << "It's a draw!" << std::endl;
+                        gameState = GameOver;
+                    }
+
+                    // Меняем ход на игрока после хода AI
+                    if (gameState == GamePlay) {
+                        playerTurn = true;  // Теперь ход игрока
                     }
                 }
             }
         }
 
+        // Отображение игры
         window.clear();
 
-        if (currentState == MainMenu) {
-            windowRend.draw(window);
-            fontTitul.draw(window);
+        if (gameState == MainMenu) {
+            background.draw(window);
             startButton.draw(window);
             exitButton.draw(window);
+            title.draw(window);
         }
-        else if (currentState == GamePlay) {
-            windowRend.draw(window);
-            loadBoard.draw(window);
-            boardArr.draw(window, cellSize, gap);
-            if (boardArr.checkWinner()) {
-                currentState = GameOver;
-            }
+        if (gameState == GamePlay) {
+            background.draw(window);
+            board.draw(window);
         }
-        else if (currentState == GameOver) {
-            replayButton.draw(window);  // Отрисовываем кнопку "Play Again"
+        if (gameState == GameOver) {
+            // Логика для отображения завершения игры
+            TitleText gameOverText(window, "Game Over", 100, { window.getSize().x / 2.0f, window.getSize().y / 2.0f });
+            gameOverText.draw(window);
         }
 
         window.display();

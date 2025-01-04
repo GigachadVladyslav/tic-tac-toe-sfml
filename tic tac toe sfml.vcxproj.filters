@@ -6,7 +6,6 @@
     <ClCompile Include="Code\Button.cpp" />
     <ClCompile Include="Code\Font.cpp" />
     <ClCompile Include="Code\WindowRender.cpp" />
-    <ClCompile Include="Code\Ai.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libaries\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include\SFML\Audio\AlResource.hpp" />
@@ -211,7 +210,6 @@
     <ClInclude Include="Libaries\SFML-2.6.2\include\SFML\OpenGL.hpp" />
     <ClInclude Include="Libaries\SFML-2.6.2\include\SFML\System.hpp" />
     <ClInclude Include="Libaries\SFML-2.6.2\include\SFML\Window.hpp" />
-    <ClInclude Include="Code\Ai.hpp" />
     <ClInclude Include="Code\Button.hpp" />
     <ClInclude Include="Code\Font.hpp" />
     <ClInclude Include="Code\WindowRender.hpp" />

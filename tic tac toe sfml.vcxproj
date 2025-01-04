@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Code\Ai.cpp" />
     <ClCompile Include="Code\Boardload.cpp" />
     <ClCompile Include="Code\Button.cpp" />
     <ClCompile Include="Code\Font.cpp" />
@@ -27,7 +26,6 @@
     <ClCompile Include="Code\WindowRender.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\Ai.hpp" />
     <ClInclude Include="Code\Boardload.hpp" />
     <ClInclude Include="Code\Button.hpp" />
     <ClInclude Include="Code\Font.hpp" />
